@@ -14,7 +14,7 @@ NAME = lemin
 
 FLAGS = -Werror -Wall -Wextra
 
-SRCS = checks.c creation.c destroy.c main.c misc.c misc2.c bfs.c paths.c 
+SRCS = checks.c creation.c destroy.c main.c misc.c misc2.c bfs.c bfs2.c paths.c 
 
 LIB = -L libft/ -lft
 
@@ -22,7 +22,7 @@ all: $(NAME)
 
 $(NAME):
 	@$(MAKE) -C libft
-	gcc -o $(NAME)  $(FLAGS) $(SRCS) $(LIB)
+	gcc -o $(NAME) $(SRCS) $(LIB)
 
 clean:
 	rm -f $(NAME)

@@ -17,7 +17,7 @@ int         verifyRoomBeneath(t_antFarm *farm, char *line, char *cmd, int result
     char    **split;
 
     get_next_line(0, &line);
-    //line = ft_strtrim(line);//leak possibility
+    line = ft_strtrim(line);
     if (isRoom(line, farm) == 1)
     {
         split = ft_strsplit(line, ' ');//we split bcos we need to retrieve the rooms name from the line we gnl gave us. its at index 0 in the array strsplit returns

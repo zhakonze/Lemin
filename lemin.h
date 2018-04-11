@@ -68,13 +68,12 @@ int                 createFarm(t_antFarm *farm, char *line, int result);
 int                 createRoom(t_antFarm *farm, char *line);
 int                 createLink(t_antFarm *farm, char *line);
 int                 createAnts(t_antFarm *farm);
-int                 createPaths(t_antFarm *farm);
+t_path              *createPath(t_antFarm *farm, int distance);
 void                destroyLinks(t_antFarm *farm);
 void                destroyRooms(t_antFarm *farm);
 void                destroyPaths(t_antFarm *farm);
 void                destroyAnts(t_antFarm *farm);
 void                destroyFarm(t_antFarm *farm);
-// void                bfs(t_antFarm  *farm);
 void                clearLink(char *name1, char *name2, t_antFarm *farm);
 void                cleanUnvisited(t_antFarm *farm);
 void                bfsSetup(t_antFarm  *farm);
@@ -86,10 +85,11 @@ void                getPath(t_antFarm *farm);
 void                bfs(t_antFarm *farm, t_queue **queue);
 void                removeFromQueue(t_queue **queue);
 void                addToQueue(t_queue **queue, char *item);
-// void                cleanPaths(t_path *allPaths);
 void                sortPath(t_path *allPaths);
-// void                *bfs(t_antFarm *farm);
 t_room              *getRoomFromFarm(t_antFarm *farm, char *room);
+void                setVisitation(t_room *n, t_room *he, t_queue **q);
+void                getPaths(t_antFarm *farm);
+void                addPathToPaths(t_path **allPaths, t_path * aPath);
 
 
 

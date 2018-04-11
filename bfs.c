@@ -39,24 +39,15 @@ void        bfs(t_antFarm *farm, t_queue **queue)
         while(head->linked[++index] != NULL)
         {
             neighbour = getRoomFromFarm(farm, head->linked[index]);
-                if (ft_strequ(head->visitedBy, neighbour->name) == 1)
-                    continue;//allows us to skip a neighbour who is the fathe i.e the visitor
-                if (neighbour->visited == 1)
-                {
-                    clearLink(head->name, neighbour->name, farm);
-                    index--;
-                }
-                else
-                {
-                    neighbour->visited = 1;
-                    neighbour->visitedBy = ft_strdup(head->name);
-                    neighbour->lvl = head->lvl + 1;
-                    if (neighbour->lvl == 2)
-                        neighbour->pathMaster = ft_strdup(head->name);
-                    else if (neighbour->lvl > 2)
-                        neighbour->pathMaster = ft_strdup(head->pathMaster);
-                    addToQueue(queue, neighbour->name);
-                }
+            if (ft_strequ(head->visitedBy, neighbour->name) == 1)
+                continue ;//allows us to skip a neighbour who is the father i.e the visitor and skips if the head(i.e visitor) is the endroom
+            if (neighbour->visited == 1)
+            {
+                clearLink(head->name, neighbour->name, farm);
+                index--;
+            }
+            else if (ft_strequ(farm->endRoom, neighbour->name) == 0)//this ensures setVisitation only happens for rooms that are not the endRoom, this means the endroom will never visit rooms but will in turn be visited by many rooms. this means that endRoom will also never the head in this case
+                setVisitation(neighbour, head, queue);
         }
         removeFromQueue(queue);
     }
@@ -114,7 +105,7 @@ void     cleanUnvisited(t_antFarm *farm)
     room = farm->allRooms;
     while (room != NULL)
     {
-        if (room->visited == 0)
+        if (room->visited == 0 && ft_strequ(room->name, farm->endRoom) == 0)
         {
             while (room->linked[linkIndex] != NULL)//this loop clears the link between this unvisited room and the rooms its linked to
                 clearLink(room->name, room->linked[linkIndex], farm);

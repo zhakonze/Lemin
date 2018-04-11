@@ -32,6 +32,7 @@ int main(void)
     }
     printf("\nstart room is : %s\nend room is   : %s\n\n\n\t\tFarm after bfs\n\n",farm.startRoom, farm.endRoom);
     bfsSetup(&farm);
+    //this section prints the farm after bfs transformation
     rooms = farm.allRooms;
     while (rooms != NULL)
     {
@@ -43,6 +44,25 @@ int main(void)
             index++;
         }
         rooms = rooms->next;
+    }
+
+    //this section is where we print out the paths we got after bfs
+    printf("\n\n\n These are the paths\n\n");
+    getPaths(&farm);
+    t_path *path;
+    path = farm.allPaths;
+    int pathNum = 1;
+    while (path != NULL)
+    {
+        int index = 0;
+        printf("These are the rooms in path %d\n", pathNum);
+        while (path->roomsInPath[index] != NULL)
+        {
+            printf("\t\troom%d: %s\n", index + 1, path->roomsInPath[index]);
+            index++;
+        }
+        pathNum++;
+        path = path->next;
     }
    // moveAnts(&farm);
     //destroyFarm(&farm);    

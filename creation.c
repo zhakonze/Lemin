@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   creations.c                                        :+:      :+:    :+:   */
+/*   creation.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zhakonze <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,7 +16,7 @@ int         createFarm(t_antFarm *farm, char *line, int result)
 {
     while (result == 1 && get_next_line(0, &line) > 0)
     {
-        //line = ft_strtrim(line);//leak could happen here.s
+        line = ft_strtrim(line);//leak could happen here.s
         ft_putendl(line);
         if (isNumAnts(line, farm) == -1)
             result = 0;
@@ -75,7 +75,7 @@ int         createLink(t_antFarm *farm, char *line)//here line is like this 1-2:
     split = ft_strsplit(line, '-');
     r1 = getRoomFromFarm(farm, split[0]); //gets the 1st room
     r2 = getRoomFromFarm(farm, split[1]); //gets the 2nd room
-    //now we nned to add r1 to r2's linked rooms and vice versa
+    //now we need to add r1 to r2's linked rooms and vice versa
     //if either of the two dont have linked rooms yet, then we have to malloc space for that.
     //bellow is for adding r2 to r1;
     //but first we check if these rooms are not already linked to each other
@@ -115,13 +115,22 @@ int         createAnts(t_antFarm *farm)
     }
     return (1);
 }
-/*
-int         createPaths(t_antFarm *farm)
+
+t_path      *createPath(t_antFarm *farm, int distance)
 {
-    int             distance;
-    char            **roomsInPath;
-    struct s_path   *next;
-    ls
-    
-    return (0);
-}*/
+    t_path  *path;
+
+    path = (t_path*)malloc(sizeof(t_path));
+    if (path == NULL)
+        return (NULL);//if mem was not alloc
+    else
+    {
+        path->next = NULL;
+        path->distance = distance;
+        path->roomsInPath = (char**)malloc(sizeof(char*)*(distance + 1));
+        path->roomsInPath[distance] = NULL;
+        path->roomsInPath[distance - 1] = ft_strdup(farm->endRoom);
+        path->roomsInPath[0] = ft_strdup(farm->startRoom);
+        return path;
+    }
+}

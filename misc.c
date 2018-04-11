@@ -69,19 +69,3 @@ void    removeFromQueue(t_queue **queue)
         free(tmp);
     }
 }
-/*
-
-void        cleanPaths(t_antFarm *farm)
-{
-
-}
-
-void        sortPaths(t_antFarm *farm)
-{
-
-}
-
-void        moveAnts(t_antFarm *farm)
-{
-    
-}*/
