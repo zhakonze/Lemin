@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   destory.c                                          :+:      :+:    :+:   */
+/*   paths2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zhakonze <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,32 +11,31 @@
 /* ************************************************************************** */
 
 #include "lemin.h"
-/*
-void        destroyLinks(t_antFarm *farm)
-{
 
-}
-
-void        destroyRooms(t_antFarm *farm)
-{
-}
-*/
-
-void        destroyAPath(t_path **allPaths)
+void        clearPaths(t_path **allPaths)
 {
     t_path *head;
+    t_path *afterHead;
+    t_path *holder;
 
-    head = popPath(allPaths);
-    head->roomsInPath = (char**)ft_clear_2d((void**)head->roomsInPath);
-    free(head);
+    head = *allPaths;
+    while (head != NULL)
+    {
+        afterHead = head->next;
+        holder = head;
+        while (afterHead != NULL)
+        {
+            if (ft_strequ(head->roomsInPath[1], afterHead->roomsInPath[1]) == 1)
+            {
+                destroyAPath(&afterHead);
+                holder->next = afterHead;
+            }
+            else
+            {
+                afterHead = afterHead->next;
+                holder = holder->next;
+            }
+        }
+        head = head->next;
+    }
 }
-/*
-void        destroyAnts(t_antFarm *farm)
-{
-
-}
-
-void        destroyFarm(t_antFarm *farm)
-{
-    
-}*/

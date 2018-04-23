@@ -72,7 +72,7 @@ void        addLink(t_room **room, char *name)
         }
         //after stopping at null, we now copy the new neighbour in.
         tempLinked[index] = ft_strdup(name);
-        
+
         tempLinked[index + 1] = NULL;
        // (*room)->linked = (char**)ft_clear_2d((void**)(*room)->linked);
         (*room)->linked = tempLinked;

@@ -4,19 +4,19 @@ int main(void)
 {
     t_antFarm   farm;
     char        *line;
-    int         result;
-    
+    int         result;//shows if farm data is successfully read, i.e created, from the map..
+
     result = 1;
     line = NULL;
-    farm = (t_antFarm) {-1, NULL, NULL, NULL, NULL, NULL};
+    farm = (t_antFarm) {-1, NULL, NULL, NULL, NULL, NULL};// in the farm we can be given zero number of ants,so that means the the ants can range from 0-1000, so by me saying -1 just means no ants can be -1
     result = createFarm(&farm, line, result);
     if (result == 0)
     {
         ft_putendl("Error");
         exit(0);
     }
- //   createPaths(&farm);
-    createAnts(&farm);
+    //   createPaths(&farm);
+    //createAnts(&farm);
     printf("\nfarm contains : %d ants\n\n\t\tFarm before bfs\n\n", farm.numAnts);
     t_room *rooms = farm.allRooms;
     while (rooms != NULL)

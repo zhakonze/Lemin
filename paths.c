@@ -12,17 +12,52 @@
 
 #include "lemin.h"
 
-/*void    cleanPaths(t_path *allPaths) 
+t_path         *popPath(t_path **allPaths)// a path will be something like [1]-[3]-[5]-[2]-[4]
 {
+    t_path *poppedPath;
 
+    poppedPath = *allPaths;//we then put the path [1]-[3]-[5]-[2]-[4] in poppedPath, now allPaths is empty.
+    *allPaths = poppedPath->next;//allPaths now has the following paths [3]-[5]-[2]-[4]
+    poppedPath->next = NULL;//[1]-NULL
+    return (poppedPath);
 }
 
-void    sortPath(t_path *allPaths)
+static void     pushPath(t_path **allPaths, t_path *pushedPath)
 {
+    if (*allPaths == NULL)
+        *allPaths = pushedPath;
+    else 
+    {
+        pushedPath->next = *allPaths;
+        *allPaths = pushedPath;
+    }
+}
 
-}*/
+void    sortPath(t_path **allPaths)
+{
+    t_path *holder;
+    t_path *sortedPaths;
 
-void    addPathToPaths(t_path **allPaths, t_path * aPath)
+    holder = NULL;
+    sortedPaths = NULL;
+    while (*allPaths != NULL)
+    {
+        holder = popPath(allPaths);
+        while (holder != NULL) //while we havent placed this path in its rightful placed, i.e while we still hold him
+        {
+            if (sortedPaths == NULL || (holder->distance <= sortedPaths->distance))
+            {
+                pushPath(&sortedPaths, holder);
+                holder = NULL; 
+            }
+            else
+                pushPath(allPaths, popPath(&sortedPaths));//we pop from sorted before pushing onto allPATHS
+        }
+    }
+    *allPaths = sortedPaths;
+}
+
+void        addPathToPaths(t_path **allPaths, t_path * aPath)//we take in a double pointer because the stucture might change
 {
     if (*allPaths == NULL)
         *allPaths  = aPath;
@@ -33,7 +68,7 @@ void    addPathToPaths(t_path **allPaths, t_path * aPath)
     }
 }
 
-void    getPaths(t_antFarm *farm)
+void        getPaths(t_antFarm *farm)
 {
     int     index;
     int     revIndex;
@@ -57,4 +92,6 @@ void    getPaths(t_antFarm *farm)
         addPathToPaths(&farm->allPaths, new_path);//& shows we change the structutre of that parameter, so we pass its address
         index++;
     }
+    sortPath(&farm->allPaths);
+    clearPaths(&farm->allPaths);
 }

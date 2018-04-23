@@ -37,7 +37,7 @@ int         isCommand(char *line, t_antFarm *farm)
     result = 1;
     if (ft_strlen(line) >= 2 && line[0] == '#' && line[1] == '#')
     {
-        cmd = ft_strsub(line, 2, ft_strlen(line) - 2);
+        cmd = ft_strsub(line, 2, ft_strlen(line) - 2);//this is just to cut of the twwo #s
         if (ft_strequ(cmd, "end") == 1 || ft_strequ(cmd, "start") == 1)
             result = verifyRoomBeneath(farm, line, cmd, result);//this function will check if the line below the command is an actual room that has not been created yet. if the the next line is not a valid room, it will return 0, else it will return 1 then assign this rooms name to the farm's start or endRoom attribute based on the command
         free(cmd);
@@ -49,14 +49,14 @@ int         isCommand(char *line, t_antFarm *farm)
 }
 
 /* This function will check if the line read is a room,
-a room will have three digits separated by a spaces, the 
+a room will have three digits separated by a spaces, the
 first digit is the room number and the other two are co-ordinates.
 We string-split the line to get the individual digits and store
 them in a double pointer array, we then loop through the array to
 check if we get three digits, if not then this is not a room.
 We then also have to make sure that the components are infact numbers
 
-getRoomFromFarm function will return NULL when the room does not 
+getRoomFromFarm function will return NULL when the room does no
 exist in the farm and will return the room if it exists*/
 
 int         isRoom(char *line, t_antFarm *farm)
@@ -87,7 +87,7 @@ int         isRoom(char *line, t_antFarm *farm)
 }
 
 /* This function will check if the line read is a link,
-a link will have two digits separated by a dash, the 
+a link will have two digits separated by a dash, the
 a link can not have two identical numbers e.g 1-1(so room 1 can't be linked to room 1).
 We string-split the line to get the individual digits and store
 them in a double pointer array, we then loop through the array to
@@ -101,7 +101,7 @@ int         isLink(char *line, t_antFarm *farm)
     int     result;
 
     result = 1;
-    if (farm->allRooms != NULL && farm->startRoom && farm->endRoom)
+    if (farm->allRooms != NULL && farm->startRoom && farm->endRoom)//checks if we have rooms and if we have both start and end room. if this is false then we go to the else down there
     {
         array = ft_strsplit(line, '-');
         components = 0;

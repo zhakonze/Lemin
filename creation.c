@@ -14,9 +14,9 @@
 
 int         createFarm(t_antFarm *farm, char *line, int result)
 {
-    while (result == 1 && get_next_line(0, &line) > 0)
+    while (result == 1 && get_next_line(0, &line) > 0)// in our main result is intialized to 1(i.e everything is ok), so while everytin is ok and we hvn't reached the EoL
     {
-        line = ft_strtrim(line);//leak could happen here.s
+        line = ft_strtrim(line);//leak could happen here, we string split to remove all spaces back and front of line.
         ft_putendl(line);
         if (isNumAnts(line, farm) == -1)
             result = 0;
@@ -48,7 +48,7 @@ int         createRoom(t_antFarm *farm, char *line)//name here includes the real
     {
         split = ft_strsplit(line, ' ');
         room->name = ft_strdup(split[0]);
-        room->visited = 0;
+        room->visited = 0;//all theses will be NULL before bfs
         room->visitedBy = NULL;
         room->pathMaster = NULL;
         room->lvl = 0;
@@ -77,10 +77,10 @@ int         createLink(t_antFarm *farm, char *line)//here line is like this 1-2:
     r2 = getRoomFromFarm(farm, split[1]); //gets the 2nd room
     //now we need to add r1 to r2's linked rooms and vice versa
     //if either of the two dont have linked rooms yet, then we have to malloc space for that.
-    //bellow is for adding r2 to r1;
+    //below is for adding r2 to r1;
     //but first we check if these rooms are not already linked to each other
-    if (ft_contains(r1->linked, r2->name) == 1)
-        return (1);
+    if (ft_contains(r1->linked, r2->name) == 1)//prevents from creating duplicate links.
+        return (1);//already exsits
     else
     {
         addLink(&r1, r2->name);//& is there because we're gonna update room r1's attributes. i.e we're gonna add r2's name to its linked rooms
@@ -105,7 +105,7 @@ int         createAnts(t_antFarm *farm)
         ant->distanceCovered = 0;
         ant->turnToMove = 0;
         if (farm->allAnts == NULL)
-            farm->allAnts = ant;
+            farm->allAnts = ant;// if we create this ant and we find that this is actually the first ant, then we assign it to be the farm's allAnts attribute bcos currently there's only it
         else
         {
             ant->next = farm->allAnts;
@@ -116,20 +116,20 @@ int         createAnts(t_antFarm *farm)
     return (1);
 }
 
-t_path      *createPath(t_antFarm *farm, int distance)
+t_path      *createPath(t_antFarm *farm, int distance)//This will be done after BFS has already been performed 
 {
     t_path  *path;
 
     path = (t_path*)malloc(sizeof(t_path));
     if (path == NULL)
-        return (NULL);//if mem was not alloc
+        return (NULL);//if memory was not allocated
     else
     {
         path->next = NULL;
         path->distance = distance;
-        path->roomsInPath = (char**)malloc(sizeof(char*)*(distance + 1));
-        path->roomsInPath[distance] = NULL;
-        path->roomsInPath[distance - 1] = ft_strdup(farm->endRoom);
+        path->roomsInPath = (char**)malloc(sizeof(char*)*(distance + 1));//Memory is allocated once for all rooms in the path.
+        path->roomsInPath[distance] = NULL;//set to NULL to mark the end of the list of Rooms(a link list always needs at NULL)
+        path->roomsInPath[distance - 1] = ft_strdup(farm->endRoom);// we give index at[distance - 1] endRoom, because that marks the end of the room as in {'1', '3', '5', '7', '0', NULL}, where '0' is the endRoom
         path->roomsInPath[0] = ft_strdup(farm->startRoom);
         return path;
     }
