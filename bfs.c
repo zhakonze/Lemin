@@ -17,7 +17,7 @@ void        bfsSetup(t_antFarm  *farm)
     t_queue *queue;
     t_room  *startRoom;
 
-    queue = NULL;
+    queue = NULL;//store/hold unvisited rooms/ NULL at the moment because the queue is empty
     startRoom = getRoomFromFarm(farm, farm->startRoom);
     startRoom->visited = 1;
     startRoom->visitedBy = startRoom->name;
@@ -36,7 +36,7 @@ void        bfs(t_antFarm *farm, t_queue **queue)
     {
         head = getRoomFromFarm(farm, (*queue)->name);
         index = -1;
-        while(head->linked[++index] != NULL)
+        while(head->linked[++index] != NULL)//loops around the neighbour
         {
             neighbour = getRoomFromFarm(farm, head->linked[index]);
             if (ft_strequ(head->visitedBy, neighbour->name) == 1)
@@ -70,7 +70,7 @@ static char **removeNeighbour(char **linked, char *name)
     tmpLinked[len - 1] = NULL; //NULL shifts to the prev len minus one because we're about to remove a link
     while (tmpIndex < len - 1)
     {
-        if (ft_strequ(linked[linkedIndex], name) == 1)
+        if (ft_strequ(linked[linkedIndex], name) == 1)//skipping the selected room
             linkedIndex++;
         else
             tmpLinked[tmpIndex++] = ft_strdup(linked[linkedIndex++]);

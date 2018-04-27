@@ -91,7 +91,8 @@ void                addPathToPaths(t_path **allPaths, t_path * aPath);
 void                sortPath(t_path **allPaths);
 t_path              *popPath(t_path **allPaths);
 void                destroyAPath(t_path **allPaths);
-
+void                clearPaths(t_path **allPaths);
+int                 getNumberOfPaths(int ants, t_path *allPaths);
 
 
 

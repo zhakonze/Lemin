@@ -12,7 +12,7 @@
 
 #include "lemin.h"
 
-t_path         *popPath(t_path **allPaths)// a path will be something like [1]-[3]-[5]-[2]-[4]
+t_path         *popPath(t_path **allPaths)// allPaths will be something like [1]-[3]-[5]-[2]-[4]
 {
     t_path *poppedPath;
 

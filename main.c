@@ -64,6 +64,10 @@ int main(void)
         pathNum++;
         path = path->next;
     }
+
+    printf("\n\n\n The best number of paths to use.\n\n\t\t-:\t%d\n",getNumberOfPaths(farm.numAnts, farm.allPaths));
+
+
    // moveAnts(&farm);
     //destroyFarm(&farm);    
     return (0);
