@@ -12,20 +12,20 @@
 
 #include "lemin.h"
 
-int         verifyRoomBeneath(t_antFarm *farm, char *line, char *cmd, int result)
+int         verifyroombeneath(t_antfarm *farm, char *line, char *cmd, int result)
 {
     char    **split;
 
     get_next_line(0, &line);
     line = ft_strtrim(line);
-    if (isRoom(line, farm) == 1)
+    if (isroom(line, farm) == 1)
     {
         split = ft_strsplit(line, ' ');//we split bcos we need to retrieve the rooms name from the line we gnl gave us. its at index 0 in the array strsplit returns
-        createRoom(farm, line);// since we found that the line we read is valid, now we create that room and add it to the farm
+        createroom(farm, line);// since we found that the line we read is valid, now we create that room and add it to the farm
         if (ft_strequ(cmd, "end") == 1 && farm->endRoom == NULL)
             farm->endRoom = ft_strdup(split[0]);//copies the rooms name to the farm's endRoom attribute. this is just to note down that the room just created is the endroom
-        else if (ft_strequ(cmd, "start") == 1 && farm->startRoom == NULL)
-            farm->startRoom = ft_strdup(split[0]);
+        else if (ft_strequ(cmd, "start") == 1 && farm->startroom == NULL)
+            farm->startroom = ft_strdup(split[0]);
         else
             result = 0;
         split = (char**)ft_clear_2d((void**)split); // we clear the mem strsplit allocated

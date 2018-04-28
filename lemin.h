@@ -40,57 +40,59 @@ typedef struct      s_room
 
 typedef struct      s_ant
 {
-    int             antNum;
-    t_path          *pathTravelThru;//an ant can only travel thru one path, so an ant needs to know which path its going to travel thru.
-    int             distanceCovered;//distance an ant has travelled so we know if it has reached the end of the path.
-    int             turnToMove;//all ants can't move at once, so this will instruct the ant if its turn to move
+    int             antnum;
+    int             pathNumber;
+    t_path          *pathtravelthru;//an ant can only travel thru one path, so an ant needs to know which path its going to travel thru.
+    int             distancecovered;//distance an ant has travelled so we know if it has reached the end of the path.
+    int             turntomove;//all ants can't move at once, so this will instruct the ant if its turn to move
     struct s_ant    *next;
 }                   t_ant;
 
 typedef struct      s_antFarm
 {
-    int             numAnts;
-    char            *startRoom;
+    int             numants;
+    char            *startroom;
     char            *endRoom;
     t_path          *allPaths;//after bfs
     t_room          *allRooms;
-    t_ant           *allAnts;
-}                   t_antFarm;
+    t_ant           *allants;
+}                   t_antfarm;
 
-int                 isComment(char *line);
-int                 isCommand(char *line, t_antFarm *farm);
-int                 isRoom(char *line, t_antFarm *farm);
-int                 isLink(char *line, t_antFarm *farm);
+int                 iscomment(char *line);
+int                 iscommand(char *line, t_antfarm *farm);
+int                 isroom(char *line, t_antfarm *farm);
+int                 islink(char *line, t_antfarm *farm);
 void                addLink(t_room **room, char *name);
-int                 isNumAnts(char *line, t_antFarm *farm);
-int                 verifyRoomBeneath(t_antFarm *f, char *l, char *c, int res);
-int                 createFarm(t_antFarm *farm, char *line, int result);
-int                 createRoom(t_antFarm *farm, char *line);
-int                 createLink(t_antFarm *farm, char *line);
-int                 createAnts(t_antFarm *farm);
-t_path              *createPath(t_antFarm *farm, int distance);
-void                destroyLinks(t_antFarm *farm);
-void                destroyRooms(t_antFarm *farm);
-void                destroyPaths(t_antFarm *farm);
-void                destroyAnts(t_antFarm *farm);
-void                destroyFarm(t_antFarm *farm);
-void                clearLink(char *name1, char *name2, t_antFarm *farm);
-void                cleanUnvisited(t_antFarm *farm);
-void                bfsSetup(t_antFarm  *farm);
-void                moveAnts(t_antFarm *farm);
-void                cleanPaths(t_antFarm *farm);
+int                 isnumants(char *line, t_antfarm *farm);
+int                 verifyroombeneath(t_antfarm *f, char *l, char *c, int res);
+int                 createfarm(t_antfarm *farm, char *line, int result);
+int                 createroom(t_antfarm *farm, char *line);
+int                 createlink(t_antfarm *farm, char *line);
+int                 createants(t_antfarm *farm);
+t_path              *createpath(t_antfarm *farm, int distance);
+void                destroyLinks(t_antfarm *farm);
+void                destroyRooms(t_antfarm *farm);
+void                destroyPaths(t_antfarm *farm);
+void                destroyAnts(t_antfarm *farm);
+void                destroyFarm(t_antfarm *farm);
+void                clearlink(char *name1, char *name2, t_antfarm *farm);
+void                cleanunvisited(t_antfarm *farm);
+void                bfssetup(t_antfarm  *farm);
+void                moveAnts(t_antfarm *farm);
+void                updateants(t_antfarm *farm, int numPaths);
+void                cleanPaths(t_antfarm *farm);
 t_queue             *createQueueItem(char *name);
-void                getPath(t_antFarm *farm);
-void                bfs(t_antFarm *farm, t_queue **queue);
+void                getPath(t_antfarm *farm);
+void                bfs(t_antfarm *farm, t_queue **queue);
 void                removeFromQueue(t_queue **queue);
 void                addToQueue(t_queue **queue, char *item);
-t_room              *getRoomFromFarm(t_antFarm *farm, char *room);
-void                setVisitation(t_room *n, t_room *he, t_queue **q);
-void                getPaths(t_antFarm *farm);
+t_room              *getroomfromfarm(t_antfarm *farm, char *room);
+void                setvisitation(t_room *n, t_room *he, t_queue **q);
+void                getPaths(t_antfarm *farm);
 void                addPathToPaths(t_path **allPaths, t_path * aPath);
 void                sortPath(t_path **allPaths);
 t_path              *popPath(t_path **allPaths);
-void                destroyAPath(t_path **allPaths);
+void                destroyapath(t_path **allPaths);
 void                clearPaths(t_path **allPaths);
 int                 getNumberOfPaths(int ants, t_path *allPaths);
 

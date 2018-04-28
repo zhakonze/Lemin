@@ -12,105 +12,100 @@
 
 #include "lemin.h"
 
-void        bfsSetup(t_antFarm  *farm)
+void		bfssetup(t_antfarm *farm)
 {
-    t_queue *queue;
-    t_room  *startRoom;
+	t_queue	*queue;
+	t_room	*startroom;
 
-    queue = NULL;//store/hold unvisited rooms/ NULL at the moment because the queue is empty
-    startRoom = getRoomFromFarm(farm, farm->startRoom);
-    startRoom->visited = 1;
-    startRoom->visitedBy = startRoom->name;
-    addToQueue(&queue, startRoom->name);
-    bfs(farm, &queue);
-    cleanUnvisited(farm);
+	queue = NULL;
+	startroom = getroomfromfarm(farm, farm->startroom);
+	startroom->visited = 1;
+	startroom->visitedBy = startroom->name;
+	addToQueue(&queue, startroom->name);
+	bfs(farm, &queue);
+	cleanunvisited(farm);
 }
 
-void        bfs(t_antFarm *farm, t_queue **queue)
+void		bfs(t_antfarm *farm, t_queue **queue)
 {
-    int     index;
-    t_room  *head;
-    t_room  *neighbour;
+	int		index;
+	t_room	*head;
+	t_room	*neighbour;
 
-    while(*queue != NULL)
-    {
-        head = getRoomFromFarm(farm, (*queue)->name);
-        index = -1;
-        while(head->linked[++index] != NULL)//loops around the neighbour
-        {
-            neighbour = getRoomFromFarm(farm, head->linked[index]);
-            if (ft_strequ(head->visitedBy, neighbour->name) == 1)
-                continue ;//allows us to skip a neighbour who is the father i.e the visitor and skips if the head(i.e visitor) is the endroom
-            if (neighbour->visited == 1)
-            {
-                clearLink(head->name, neighbour->name, farm);
-                index--;
-            }
-            else if (ft_strequ(farm->endRoom, neighbour->name) == 0)//this ensures setVisitation only happens for rooms that are not the endRoom, this means the endroom will never visit rooms but will in turn be visited by many rooms. this means that endRoom will also never the head in this case
-                setVisitation(neighbour, head, queue);
-        }
-        removeFromQueue(queue);
-    }
+	while (*queue != NULL)
+	{
+		head = getroomfromfarm(farm, (*queue)->name);
+		index = -1;
+		while (head->linked[++index] != NULL)
+		{
+			neighbour = getroomfromfarm(farm, head->linked[index]);
+			if (ft_strequ(head->visitedBy, neighbour->name) == 1)
+				continue ;
+			if (neighbour->visited == 1)
+			{
+				clearlink(head->name, neighbour->name, farm);
+				index--;
+			}
+			else if (ft_strequ(farm->endRoom, neighbour->name) == 0)
+				setvisitation(neighbour, head, queue);
+		}
+		removeFromQueue(queue);
+	}
 }
 
-static char **removeNeighbour(char **linked, char *name)
+static char	**removeneighbour(char **linked, char *name)
 {
-    int     len;
-    int     tmpIndex;
-    int     linkedIndex;
-    char    **tmpLinked;
+	int		len;
+	int		tmpindex;
+	int		linkedlndex;
+	char	**tmplinked;
 
-    len = 0;
-    tmpIndex = 0;
-    linkedIndex = 0;
-    while (linked[len] != NULL)
-        len++;
-    if ((tmpLinked = (char**)malloc(sizeof(char*)*((len - 1) + 1))) == NULL)//checking if we could allocate mem successfully
-        return (NULL); //we return NULL if not allocated successfully
-    tmpLinked[len - 1] = NULL; //NULL shifts to the prev len minus one because we're about to remove a link
-    while (tmpIndex < len - 1)
-    {
-        if (ft_strequ(linked[linkedIndex], name) == 1)//skipping the selected room
-            linkedIndex++;
-        else
-            tmpLinked[tmpIndex++] = ft_strdup(linked[linkedIndex++]);
-    }
-    linked = (char**)ft_clear_2d((void**)linked);
-    return (tmpLinked);
+	len = 0;
+	tmpindex = 0;
+	linkedlndex = 0;
+	while (linked[len] != NULL)
+		len++;
+	if ((tmplinked = (char**)malloc(sizeof(char*) * ((len - 1) + 1))) == NULL)
+		return (NULL);
+	tmplinked[len - 1] = NULL;
+	while (tmpindex < len - 1)
+	{
+		if (ft_strequ(linked[linkedlndex], name) == 1)
+			linkedlndex++;
+		else
+			tmplinked[tmpindex++] = ft_strdup(linked[linkedlndex++]);
+	}
+	linked = (char**)ft_clear_2d((void**)linked);
+	return (tmplinked);
 }
 
-void        clearLink(char *name1, char *name2, t_antFarm *farm) 
+void		clearlink(char *name1, char *name2, t_antfarm *farm)
 {
-    t_room  *r1;
-    t_room  *r2;
+	t_room	*r1;
+	t_room	*r2;
 
-    r1 = getRoomFromFarm(farm, name1);
-    r2 = getRoomFromFarm(farm, name2);
-
-    //we need to remove r2 fro  r1's linked neighbours
-    //and similarly we remove r1 from r2's neighbours
-
-    r1->linked = removeNeighbour(r1->linked, name2);
-    r2->linked = removeNeighbour(r2->linked, name1);
+	r1 = getroomfromfarm(farm, name1);
+	r2 = getroomfromfarm(farm, name2);
+	r1->linked = removeneighbour(r1->linked, name2);
+	r2->linked = removeneighbour(r2->linked, name1);
 }
 
-void     cleanUnvisited(t_antFarm *farm)
+void		cleanunvisited(t_antfarm *farm)
 {
-    int     index;
-    int     linkIndex;
-    t_room  *room;
+	int		index;
+	int		linklndex;
+	t_room	*room;
 
-    index = 0;
-    linkIndex = 0;
-    room = farm->allRooms;
-    while (room != NULL)
-    {
-        if (room->visited == 0 && ft_strequ(room->name, farm->endRoom) == 0)
-        {
-            while (room->linked[linkIndex] != NULL)//this loop clears the link between this unvisited room and the rooms its linked to
-                clearLink(room->name, room->linked[linkIndex], farm);
-            //note that in this loop we dont increase linkIndex, this is because we want to always remove the one at the front i.e index 0
-        }
-        room = room->next;//continues to check all rooms in the farm
-    }
+	index = 0;
+	linklndex = 0;
+	room = farm->allRooms;
+	while (room != NULL)
+	{
+		if (room->visited == 0 && ft_strequ(room->name, farm->endRoom) == 0)
+		{
+			while (room->linked[linklndex] != NULL)
+				clearlink(room->name, room->linked[linklndex], farm);
+		}
+		room = room->next;
+	}
 }

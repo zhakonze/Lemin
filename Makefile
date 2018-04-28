@@ -15,7 +15,7 @@ NAME = lemin
 FLAGS = -Werror -Wall -Wextra
 
 SRCS =	checks.c creation.c destroy.c main.c misc.c misc2.c bfs.c bfs2.c paths.c \
-		paths2.c
+		paths2.c antUpdates.c
 
 LIB = -L libft/ -lft
 

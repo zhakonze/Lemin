@@ -68,7 +68,7 @@ void        addPathToPaths(t_path **allPaths, t_path * aPath)//we take in a doub
     }
 }
 
-void        getPaths(t_antFarm *farm)
+void        getPaths(t_antfarm *farm)
 {
     int     index;
     int     revIndex;
@@ -76,17 +76,17 @@ void        getPaths(t_antFarm *farm)
     t_path  *new_path;
     t_room  *endRoom;
 
-    endRoom = getRoomFromFarm(farm, farm->endRoom);
+    endRoom = getroomfromfarm(farm, farm->endRoom);
     index = 0;
     while (endRoom->linked[index] != NULL)
     {
-        neighbour = getRoomFromFarm(farm, endRoom->linked[index]);
+        neighbour = getroomfromfarm(farm, endRoom->linked[index]);
         revIndex = neighbour->lvl;
-        new_path = createPath(farm, neighbour->lvl + 2);
+        new_path = createpath(farm, neighbour->lvl + 2);
         while (revIndex > 0)
         {
             new_path->roomsInPath[revIndex] = ft_strdup(neighbour->name);
-            neighbour = getRoomFromFarm(farm, neighbour->visitedBy);
+            neighbour = getroomfromfarm(farm, neighbour->visitedBy);
             revIndex--;
         }
         addPathToPaths(&farm->allPaths, new_path);//& shows we change the structutre of that parameter, so we pass its address

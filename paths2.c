@@ -27,7 +27,7 @@ void        clearPaths(t_path **allPaths)
         {
             if (ft_strequ(head->roomsInPath[1], afterHead->roomsInPath[1]) == 1)
             {
-                destroyAPath(&afterHead);
+                destroyapath(&afterHead);
                 holder->next = afterHead;
             }
             else
@@ -55,7 +55,7 @@ static int  getPathDistance(t_path *allPaths, int pathIndex)
     return(tmp->distance);
 }
 
-static int  getRounds(int numPaths, t_path *allPaths, int allAnts, int remainingAnts)
+static int  getRounds(int numPaths, t_path *allPaths, int allants, int remainingAnts)
 {
     int     max;
     int     round;
@@ -70,10 +70,10 @@ static int  getRounds(int numPaths, t_path *allPaths, int allAnts, int remaining
         if (remainingAnts != 0)
         {
             remainingAnts--;
-            antsInAPath = (int)(allAnts / numPaths) + 1;
+            antsInAPath = (int)(allants / numPaths) + 1;
         }
         else
-            antsInAPath = (int)(allAnts / numPaths);
+            antsInAPath = (int)(allants / numPaths);
         pathDistance = getPathDistance(allPaths, path - 1);
         round = antsInAPath + pathDistance - 2;
         printf("\n\t\t\t\t if %d travel though path %d , the rounds taken is: %d\n",antsInAPath,path,round);

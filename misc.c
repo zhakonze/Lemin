@@ -13,7 +13,7 @@
 #include "lemin.h"
 
 
-t_room      *getRoomFromFarm(t_antFarm *farm, char *room)
+t_room      *getroomfromfarm(t_antfarm *farm, char *room)
 {
     t_room  *tempRoom;
 

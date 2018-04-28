@@ -2,22 +2,23 @@
 
 int main(void)
 {
-    t_antFarm   farm;
+    t_antfarm   farm;
     char        *line;
     int         result;//shows if farm data is successfully read, i.e created, from the map..
+    int         numPaths;
 
     result = 1;
     line = NULL;
-    farm = (t_antFarm) {-1, NULL, NULL, NULL, NULL, NULL};// in the farm we can be given zero number of ants,so that means the the ants can range from 0-1000, so by me saying -1 just means no ants can be -1
-    result = createFarm(&farm, line, result);
+    farm = (t_antfarm) {-1, NULL, NULL, NULL, NULL, NULL};// in the farm we can be given zero number of ants,so that means the the ants can range from 0-1000, so by me saying -1 just means no ants can be -1
+    result = createfarm(&farm, line, result);
     if (result == 0)
     {
         ft_putendl("Error");
         exit(0);
     }
-    //   createPaths(&farm);
-    //createAnts(&farm);
-    printf("\nfarm contains : %d ants\n\n\t\tFarm before bfs\n\n", farm.numAnts);
+    //   createpaths(&farm);
+    //createants(&farm);
+    printf("\nfarm contains : %d ants\n\n\t\tFarm before bfs\n\n", farm.numants);
     t_room *rooms = farm.allRooms;
     while (rooms != NULL)
     {
@@ -30,8 +31,8 @@ int main(void)
         }
         rooms = rooms->next;
     }
-    printf("\nstart room is : %s\nend room is   : %s\n\n\n\t\tFarm after bfs\n\n",farm.startRoom, farm.endRoom);
-    bfsSetup(&farm);
+    printf("\nstart room is : %s\nend room is   : %s\n\n\n\t\tFarm after bfs\n\n",farm.startroom, farm.endRoom);
+    bfssetup(&farm);
     //this section prints the farm after bfs transformation
     rooms = farm.allRooms;
     while (rooms != NULL)
@@ -65,8 +66,23 @@ int main(void)
         path = path->next;
     }
 
-    printf("\n\n\n The best number of paths to use.\n\n\t\t-:\t%d\n",getNumberOfPaths(farm.numAnts, farm.allPaths));
+    //this section is best path number section
+    numPaths = getNumberOfPaths(farm.numants, farm.allPaths);
+    printf("\n\n\n The best number of paths to use.\n\n\t\t-:\t%d\n", numPaths);
 
+
+    //this section is the ant details;
+    updateants(&farm, numPaths);
+    printf("\n\n\n The ant's info is as follows.\n\n");
+    t_ant *ant = farm.allants;
+    int  antnum = 1;
+    while (ant != NULL)
+    {
+        printf("\t\t ant %d details :\n", antnum);
+        antnum++;
+        printf("\t\t\t path number : %d\n\t\t\t distance : %d\n\t\t\t turn : %d\n\n",ant->pathNumber , ant->distancecovered, ant->turntomove);
+        ant = ant->next;
+    }
 
    // moveAnts(&farm);
     //destroyFarm(&farm);    
