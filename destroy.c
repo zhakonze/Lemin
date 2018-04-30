@@ -6,37 +6,36 @@
 /*   By: zhakonze <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 16:06:10 by zhakonze          #+#    #+#             */
-/*   Updated: 2017/06/22 09:02:30 by zhakonze         ###   ########.fr       */
+/*   Updated: 2018/05/01 09:49:59 by zhakonze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lemin.h"
-/*
-void        destroyLinks(t_antfarm *farm)
+
+/*void        destroylinks(t_antfarm *farm)
 {
 
 }
 
-void        destroyRooms(t_antfarm *farm)
+void        destroyrooms(t_antfarm *farm)
 {
-}
-*/
+}*/
 
-void        destroyapath(t_path **allPaths)
+void		destroyapath(t_path **allpaths)
 {
-    t_path *head;
+	t_path	*head;
 
-    head = popPath(allPaths);
-    head->roomsInPath = (char**)ft_clear_2d((void**)head->roomsInPath);
-    free(head);
-}
-/*
-void        destroyAnts(t_antfarm *farm)
-{
-
+	head = poppath(allpaths);
+	head->roomsinpath = (char**)ft_clear_2d((void**)head->roomsinpath);
+	free(head);
 }
 
-void        destroyFarm(t_antfarm *farm)
+/*void        destroyants(t_antfarm *farm)
 {
-    
+
+}
+
+void        destroyfarm(t_antfarm *farm)
+{
+
 }*/

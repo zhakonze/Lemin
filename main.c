@@ -18,73 +18,75 @@ int main(void)
     }
     //   createpaths(&farm);
     //createants(&farm);
-    printf("\nfarm contains : %d ants\n\n\t\tFarm before bfs\n\n", farm.numants);
-    t_room *rooms = farm.allRooms;
+    // printf("\nfarm contains : %d ants\n\n\t\tFarm before bfs\n\n", farm.numants);
+    t_room *rooms = farm.allrooms;
     while (rooms != NULL)
     {
-        printf("farm contains room : %s\n", rooms->name);
+        // printf("farm contains room : %s\n", rooms->name);
         int index = 0;
         while (rooms->linked[index])
         {
-            printf("\t\tneighbour %d: %s\n", index + 1, rooms->linked[index]);
+            // printf("\t\tneighbour %d: %s\n", index + 1, rooms->linked[index]);
             index++;
         }
         rooms = rooms->next;
     }
-    printf("\nstart room is : %s\nend room is   : %s\n\n\n\t\tFarm after bfs\n\n",farm.startroom, farm.endRoom);
+    // printf("\nstart room is : %s\nend room is   : %s\n\n\n\t\tFarm after bfs\n\n",farm.startroom, farm.endroom);
     bfssetup(&farm);
     //this section prints the farm after bfs transformation
-    rooms = farm.allRooms;
-    while (rooms != NULL)
-    {
-        printf("farm contains room : %s\n", rooms->name);
-        int index = 0;
-        while (rooms->linked[index])
-        {
-            printf("\t\tneighbour %d: %s\n", index + 1, rooms->linked[index]);
-            index++;
-        }
-        rooms = rooms->next;
-    }
+    rooms = farm.allrooms;
+    // while (rooms != NULL)
+    // {
+    //     printf("farm contains room : %s\n", rooms->name);
+    //     int index = 0;
+    //     while (rooms->linked[index])
+    //     {
+    //         printf("\t\tneighbour %d: %s\n", index + 1, rooms->linked[index]);
+    //         index++;
+    //     }
+    //     rooms = rooms->next;
+    // }
 
     //this section is where we print out the paths we got after bfs
-    printf("\n\n\n These are the paths\n\n");
-    getPaths(&farm);
+    // printf("\n\n\n These are the paths\n\n");
+    getpaths(&farm);
     t_path *path;
-    path = farm.allPaths;
-    int pathNum = 1;
-    while (path != NULL)
-    {
-        int index = 0;
-        printf("These are the rooms in path %d\n", pathNum);
-        while (path->roomsInPath[index] != NULL)
-        {
-            printf("\t\troom%d: %s\n", index + 1, path->roomsInPath[index]);
-            index++;
-        }
-        pathNum++;
-        path = path->next;
-    }
+    path = farm.allpaths;
+    // int pathNum = 1;
+    // while (path != NULL)
+    // {
+    //     int index = 0;
+    //     printf("These are the rooms in path %d\n", pathNum);
+    //     while (path->roomsinpath[index] != NULL)
+    //     {
+    //         printf("\t\troom%d: %s\n", index + 1, path->roomsinpath[index]);
+    //         index++;
+    //     }
+    //     pathNum++;
+    //     path = path->next;
+    // }
 
     //this section is best path number section
-    numPaths = getNumberOfPaths(farm.numants, farm.allPaths);
-    printf("\n\n\n The best number of paths to use.\n\n\t\t-:\t%d\n", numPaths);
+    numPaths = getnumberofpaths(farm.numants, farm.allpaths);
+    // printf("\n\n\n The best number of paths to use.\n\n\t\t-:\t%d\n", numPaths);
 
 
     //this section is the ant details;
     updateants(&farm, numPaths);
-    printf("\n\n\n The ant's info is as follows.\n\n");
+    // printf("\n\n\n The ant's info is as follows.\n\n");
     t_ant *ant = farm.allants;
     int  antnum = 1;
     while (ant != NULL)
     {
-        printf("\t\t ant %d details :\n", antnum);
+        // printf("\t\t ant %d details :\n", antnum);
         antnum++;
-        printf("\t\t\t path number : %d\n\t\t\t distance : %d\n\t\t\t turn : %d\n\n",ant->pathNumber , ant->distancecovered, ant->turntomove);
+        // printf("\t\t\t path number : %d\n\t\t\t distance : %d\n\t\t\t turn : %d\n\n",ant->pathnumber , ant->distancecovered, ant->turntomove);
         ant = ant->next;
     }
 
-   // moveAnts(&farm);
+    //finally moving the ants
+    printf("\n\n\n Ant movement\n\n");
+    moveants(&farm);
     //destroyFarm(&farm);    
     return (0);
 }

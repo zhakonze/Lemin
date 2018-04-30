@@ -6,92 +6,93 @@
 /*   By: zhakonze <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 16:06:10 by zhakonze          #+#    #+#             */
-/*   Updated: 2017/06/22 09:02:30 by zhakonze         ###   ########.fr       */
+/*   Updated: 2018/05/01 11:33:13 by zhakonze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lemin.h"
 
-t_path         *popPath(t_path **allPaths)// allPaths will be something like [1]-[3]-[5]-[2]-[4]
+t_path			*poppath(t_path **allpaths)
 {
-    t_path *poppedPath;
+	t_path		*poppedpath;
 
-    poppedPath = *allPaths;//we then put the path [1]-[3]-[5]-[2]-[4] in poppedPath, now allPaths is empty.
-    *allPaths = poppedPath->next;//allPaths now has the following paths [3]-[5]-[2]-[4]
-    poppedPath->next = NULL;//[1]-NULL
-    return (poppedPath);
+	poppedpath = *allpaths;
+	*allpaths = poppedpath->next;
+	poppedpath->next = NULL;
+	return (poppedpath);
 }
 
-static void     pushPath(t_path **allPaths, t_path *pushedPath)
+static void		pushpath(t_path **allpaths, t_path *pushedpath)
 {
-    if (*allPaths == NULL)
-        *allPaths = pushedPath;
-    else 
-    {
-        pushedPath->next = *allPaths;
-        *allPaths = pushedPath;
-    }
+	if (*allpaths == NULL)
+		*allpaths = pushedpath;
+	else
+	{
+		pushedpath->next = *allpaths;
+		*allpaths = pushedpath;
+	}
 }
 
-void    sortPath(t_path **allPaths)
+void			sortpath(t_path **allpaths)
 {
-    t_path *holder;
-    t_path *sortedPaths;
+	t_path		*holder;
+	t_path		*sortedpaths;
 
-    holder = NULL;
-    sortedPaths = NULL;
-    while (*allPaths != NULL)
-    {
-        holder = popPath(allPaths);
-        while (holder != NULL) //while we havent placed this path in its rightful placed, i.e while we still hold him
-        {
-            if (sortedPaths == NULL || (holder->distance <= sortedPaths->distance))
-            {
-                pushPath(&sortedPaths, holder);
-                holder = NULL; 
-            }
-            else
-                pushPath(allPaths, popPath(&sortedPaths));//we pop from sorted before pushing onto allPATHS
-        }
-    }
-    *allPaths = sortedPaths;
+	holder = NULL;
+	sortedpaths = NULL;
+	while (*allpaths != NULL)
+	{
+		holder = poppath(allpaths);
+		while (holder != NULL)
+		{
+			if (sortedpaths == NULL ||
+					(holder->distance <= sortedpaths->distance))
+			{
+				pushpath(&sortedpaths, holder);
+				holder = NULL;
+			}
+			else
+				pushpath(allpaths, poppath(&sortedpaths));
+		}
+	}
+	*allpaths = sortedpaths;
 }
 
-void        addPathToPaths(t_path **allPaths, t_path * aPath)//we take in a double pointer because the stucture might change
+void			addpathtopaths(t_path **allpaths, t_path *apath)
 {
-    if (*allPaths == NULL)
-        *allPaths  = aPath;
-    else
-    {
-        aPath->next = *allPaths;
-        *allPaths = aPath;
-    }
+	if (*allpaths == NULL)
+		*allpaths = apath;
+	else
+	{
+		apath->next = *allpaths;
+		*allpaths = apath;
+	}
 }
 
-void        getPaths(t_antfarm *farm)
+void			getpaths(t_antfarm *farm)
 {
-    int     index;
-    int     revIndex;
-    t_room  *neighbour;
-    t_path  *new_path;
-    t_room  *endRoom;
+	int			index;
+	int			revindex;
+	t_room		*neighbour;
+	t_path		*new_path;
+	t_room		*endroom;
 
-    endRoom = getroomfromfarm(farm, farm->endRoom);
-    index = 0;
-    while (endRoom->linked[index] != NULL)
-    {
-        neighbour = getroomfromfarm(farm, endRoom->linked[index]);
-        revIndex = neighbour->lvl;
-        new_path = createpath(farm, neighbour->lvl + 2);
-        while (revIndex > 0)
-        {
-            new_path->roomsInPath[revIndex] = ft_strdup(neighbour->name);
-            neighbour = getroomfromfarm(farm, neighbour->visitedBy);
-            revIndex--;
-        }
-        addPathToPaths(&farm->allPaths, new_path);//& shows we change the structutre of that parameter, so we pass its address
-        index++;
-    }
-    sortPath(&farm->allPaths);
-    clearPaths(&farm->allPaths);
+	endroom = getroomfromfarm(farm, farm->endroom);
+	index = 0;
+	while (endroom->linked[index] != NULL)
+	{
+		neighbour = getroomfromfarm(farm, endroom->linked[index]);
+		revindex = neighbour->lvl;
+		new_path = createpath(farm, neighbour->lvl + 2);
+		while (revindex > 0)
+		{
+			new_path->roomsinpath[revindex] = ft_strdup(neighbour->name);
+			neighbour = getroomfromfarm(farm, neighbour->visitedby);
+			revindex--;
+		}
+		addpathtopaths(&farm->allpaths, new_path);
+		index++;
+	}
+	sortpath(&farm->allpaths);
+	clearpaths(&farm->allpaths);
 }

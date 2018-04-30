@@ -6,105 +6,107 @@
 /*   By: zhakonze <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 16:06:10 by zhakonze          #+#    #+#             */
-/*   Updated: 2017/06/22 09:02:30 by zhakonze         ###   ########.fr       */
+/*   Updated: 2018/05/01 13:06:25 by zhakonze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lemin.h"
 
-void        clearPaths(t_path **allPaths)
+void		clearpaths(t_path **allpaths)
 {
-    t_path *head;
-    t_path *afterHead;
-    t_path *holder;
+	t_path	*head;
+	t_path	*afterhead;
+	t_path	*holder;
 
-    head = *allPaths;
-    while (head != NULL)
-    {
-        afterHead = head->next;
-        holder = head;
-        while (afterHead != NULL)
-        {
-            if (ft_strequ(head->roomsInPath[1], afterHead->roomsInPath[1]) == 1)
-            {
-                destroyapath(&afterHead);
-                holder->next = afterHead;
-            }
-            else
-            {
-                afterHead = afterHead->next;
-                holder = holder->next;
-            }
-        }
-        head = head->next;
-    }
+	head = *allpaths;
+	while (head != NULL)
+	{
+		afterhead = head->next;
+		holder = head;
+		while (afterhead != NULL)
+		{
+			if (ft_strequ(head->roomsinpath[1], afterhead->roomsinpath[1]) == 1)
+			{
+				destroyapath(&afterhead);
+				holder->next = afterhead;
+			}
+			else
+			{
+				afterhead = afterhead->next;
+				holder = holder->next;
+			}
+		}
+		head = head->next;
+	}
 }
 
-static int  getPathDistance(t_path *allPaths, int pathIndex)
+static int	getpathdistance(t_path *allpaths, int pathindex)
 {
-    t_path  *tmp;
-    int     index;
+	t_path	*tmp;
+	int		index;
 
-    tmp = allPaths;
-    index = 0;
-    while (index < pathIndex)
-    {
-        tmp = tmp->next;
-        index++;
-    }
-    return(tmp->distance);
+	tmp = allpaths;
+	index = 0;
+	while (index < pathindex)
+	{
+		tmp = tmp->next;
+		index++;
+	}
+	return (tmp->distance);
 }
 
-static int  getRounds(int numPaths, t_path *allPaths, int allants, int remainingAnts)
+static int	getrounds(int numpaths, t_path *allpaths, int allants, int antsleft)
 {
-    int     max;
-    int     round;
-    int     pathDistance;
-    int     path;
-    int     antsInAPath;
+	int		max;
+	int		round;
+	int		pathdistance;
+	int		path;
+	int		antsinapath;
 
-    max = -2147483647;
-    path = 1;
-    while (path <= numPaths)
-    {
-        if (remainingAnts != 0)
-        {
-            remainingAnts--;
-            antsInAPath = (int)(allants / numPaths) + 1;
-        }
-        else
-            antsInAPath = (int)(allants / numPaths);
-        pathDistance = getPathDistance(allPaths, path - 1);
-        round = antsInAPath + pathDistance - 2;
-        printf("\n\t\t\t\t if %d travel though path %d , the rounds taken is: %d\n",antsInAPath,path,round);
-        max = (round > max)? round : max;
-        path++;    
-    }
-    return (max);
+	max = -2147483647;
+	path = 1;
+	while (path <= numpaths)
+	{
+		if (antsleft != 0)
+		{
+			antsleft--;
+			antsinapath = (int)(allants / numpaths) + 1;
+		}
+		else
+			antsinapath = (int)(allants / numpaths);
+		pathdistance = getpathdistance(allpaths, path - 1);
+		round = antsinapath + pathdistance - 2;
+		// printf("\n\t\t\t\t if %d travel though path %d, the rounds taken is:
+		// 		%d\n", antsinapath, path, round);
+		max = (round > max) ? round : max;
+		path++;
+	}
+	return (max);
 }
 
-int         getNumberOfPaths(int ants, t_path *allPaths)
+int			getnumberofpaths(int ants, t_path *allpaths)
 {
-    int     minRounds;
-    int     rounds;
-    int     result;
-    int     numPaths;
-    t_path  *tmpPath;
+	int		minrounds;
+	int		rounds;
+	int		result;
+	int		numpaths;
+	t_path	*tmppath;
 
-    minRounds = 2147483647;
-    tmpPath = allPaths;
-    numPaths = 1;
-    while(tmpPath != NULL)
-    {
-        rounds = getRounds(numPaths, allPaths, ants, ants % numPaths);
-        printf("\n\t\t\tthough %d paths, the final min rounds is: %d\n\n\n",numPaths, rounds);
-        if (rounds < minRounds)
-        {
-            minRounds = rounds;
-            result = numPaths;
-        }
-        tmpPath = tmpPath->next;
-        numPaths++;
-    }
-    return (result);
+	minrounds = 2147483647;
+	tmppath = allpaths;
+	numpaths = 1;
+	while (tmppath != NULL)
+	{
+		rounds = getrounds(numpaths, allpaths, ants, ants % numpaths);
+		// printf("\n\t\t\tthough %d paths, the final min rounds is: %d\n\n\n",
+		// 		numpaths, rounds);
+		if (rounds < minrounds)
+		{
+			minrounds = rounds;
+			result = numpaths;
+		}
+		tmppath = tmppath->next;
+		numpaths++;
+	}
+	return (result);
 }

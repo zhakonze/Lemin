@@ -30,7 +30,7 @@ int			iscommand(char *line, t_antfarm *farm)
 	{
 		cmd = ft_strsub(line, 2, ft_strlen(line) - 2);
 		if (ft_strequ(cmd, "end") == 1 || ft_strequ(cmd, "start") == 1)
-			result = verifyroombeneath(farm, line, cmd, result);
+			result = verifyroomdown(farm, line, cmd, result);
 		free(cmd);
 		cmd = NULL;
 	}
@@ -73,7 +73,7 @@ int			islink(char *line, t_antfarm *farm)
 	int		result;
 
 	result = 1;
-	if (farm->allRooms != NULL && farm->startroom && farm->endRoom)
+	if (farm->allrooms != NULL && farm->startroom && farm->endroom)
 	{
 		array = ft_strsplit(line, '-');
 		components = 0;

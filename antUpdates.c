@@ -6,38 +6,85 @@
 /*   By: zhakonze <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 16:06:10 by zhakonze          #+#    #+#             */
-/*   Updated: 2017/06/22 09:02:30 by zhakonze         ###   ########.fr       */
+/*   Updated: 2018/05/01 08:22:48 by zhakonze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lemin.h"
 
-void	updateants(t_antfarm *farm, int numPaths)
+void		updateants(t_antfarm *farm, int numpaths)
 {
-	t_ant	*tmpAnt;
+	t_ant	*tmpant;
 	t_path	*path;
 	int		index;
 
 	createants(farm);
-	tmpAnt = farm->allants;
-	while (tmpAnt != NULL)
+	tmpant = farm->allants;
+	while (tmpant != NULL)
 	{
-		tmpAnt->distancecovered = 1;
-		if (tmpAnt->antnum % numPaths == 0)
+		tmpant->distancecovered = 1;
+		if (tmpant->antnum % numpaths == 0)
 		{
-			tmpAnt->pathNumber = numPaths;
-			tmpAnt->turntomove = tmpAnt->antnum / numPaths;
+			tmpant->pathnumber = numpaths;
+			tmpant->turntomove = tmpant->antnum / numpaths;
 		}
 		else
 		{
-			tmpAnt->pathNumber = tmpAnt->antnum % numPaths;
-			tmpAnt->turntomove = (int)(tmpAnt->antnum / numPaths) + 1;
+			tmpant->pathnumber = tmpant->antnum % numpaths;
+			tmpant->turntomove = (int)(tmpant->antnum / numpaths) + 1;
 		}
-		path = farm->allPaths;
+		path = farm->allpaths;
 		index = 0;
-		while (++index != tmpAnt->pathNumber)
+		while (++index != tmpant->pathnumber)
 			path = path->next;
-		tmpAnt->pathtravelthru = path;
-		tmpAnt = tmpAnt->next;
+		tmpant->pathtravelthru = path;
+		tmpant = tmpant->next;
+	}
+}
+
+static void	printant(char *room, int ant)
+{
+	ft_putchar('L');
+	ft_putnbr(ant);
+	ft_putchar('-');
+	ft_putstr(room);
+	ft_putchar(' ');
+}
+
+static char	*getnextroom(t_ant *ant)
+{
+	return (ant->pathtravelthru->roomsinpath[ant->distancecovered]);
+}
+
+void		moveants(t_antfarm *farm)
+{
+	int		turn;
+	t_ant	*tmpant;
+	char	*nextroom;
+	int		movedants;
+
+	turn = 1;
+	while (1)
+	{
+		movedants = 0;
+		tmpant = farm->allants;
+		while (tmpant != NULL)
+		{
+			if (tmpant->turntomove <= turn)
+			{
+				if (tmpant->distancecovered < tmpant->pathtravelthru->distance)
+				{
+					nextroom = getnextroom(tmpant);
+					printant(nextroom, tmpant->antnum);
+					tmpant->distancecovered++;
+					movedants++;
+				}
+			}
+			tmpant = tmpant->next;
+		}
+		if (movedants == 0)
+			break ;
+		ft_putchar('\n');
+		turn++;
 	}
 }
