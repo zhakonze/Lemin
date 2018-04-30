@@ -84,7 +84,9 @@ int main(void)
         ant = ant->next;
     }
 
-   // moveAnts(&farm);
+    //finally moving the ants
+    printf("\n\n\n Ant movement\n\n");
+    moveants(&farm);
     //destroyFarm(&farm);    
     return (0);
 }

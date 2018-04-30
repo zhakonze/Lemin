@@ -12,7 +12,7 @@
 
 #include "lemin.h"
 
-void	updateants(t_antfarm *farm, int numPaths)
+void		updateants(t_antfarm *farm, int numPaths)
 {
 	t_ant	*tmpAnt;
 	t_path	*path;
@@ -39,5 +39,52 @@ void	updateants(t_antfarm *farm, int numPaths)
 			path = path->next;
 		tmpAnt->pathtravelthru = path;
 		tmpAnt = tmpAnt->next;
+	}
+}
+
+static void	printAnt(char *room, int ant)
+{
+	ft_putchar('L');
+	ft_putnbr(ant);
+	ft_putchar('-');
+	ft_putstr(room);
+	ft_putchar(' ');
+}
+
+static char	*getNextRoom(t_ant *ant)
+{
+	return (ant->pathtravelthru->roomsInPath[ant->distancecovered]);	
+}
+
+void			moveants(t_antfarm *farm)
+{
+	int		turn;
+	t_ant	*tmpAnt;
+	char	*nextRoom;
+	int		movedAnts;
+
+	turn = 1;
+	while (1)//turn looping
+	{
+		movedAnts = 0;
+		tmpAnt = farm->allants;
+		while (tmpAnt != NULL)
+		{
+			if (tmpAnt->turntomove <= turn)
+			{
+				if (tmpAnt->distancecovered < tmpAnt->pathtravelthru->distance)
+				{
+					nextRoom = getNextRoom(tmpAnt);
+					printAnt(nextRoom, tmpAnt->antnum);
+					tmpAnt->distancecovered++;
+					movedAnts++;
+				}
+			}
+			tmpAnt = tmpAnt->next;
+		}
+		if (movedAnts == 0)
+			break;
+		ft_putchar('\n');
+		turn++;
 	}
 }

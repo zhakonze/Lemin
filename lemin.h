@@ -95,6 +95,7 @@ t_path              *popPath(t_path **allPaths);
 void                destroyapath(t_path **allPaths);
 void                clearPaths(t_path **allPaths);
 int                 getNumberOfPaths(int ants, t_path *allPaths);
+void                moveants(t_antfarm *farm);
 
 
 
