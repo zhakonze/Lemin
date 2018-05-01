@@ -12,11 +12,7 @@
 
 #include "lemin.h"
 
-<<<<<<< HEAD
 void		updateants(t_antfarm *farm, int numpaths)
-=======
-void		updateants(t_antfarm *farm, int numPaths)
->>>>>>> f693f4a5c8f62631eb39244c0736a337f3601171
 {
 	t_ant	*tmpant;
 	t_path	*path;
@@ -46,11 +42,7 @@ void		updateants(t_antfarm *farm, int numPaths)
 	}
 }
 
-<<<<<<< HEAD
 static void	printant(char *room, int ant)
-=======
-static void	printAnt(char *room, int ant)
->>>>>>> f693f4a5c8f62631eb39244c0736a337f3601171
 {
 	ft_putchar('L');
 	ft_putnbr(ant);
@@ -59,7 +51,6 @@ static void	printAnt(char *room, int ant)
 	ft_putchar(' ');
 }
 
-<<<<<<< HEAD
 static char	*getnextroom(t_ant *ant)
 {
 	return (ant->pathtravelthru->roomsinpath[ant->distancecovered]);
@@ -97,42 +88,3 @@ void		moveants(t_antfarm *farm)
 		turn++;
 	}
 }
-=======
-static char	*getNextRoom(t_ant *ant)
-{
-	return (ant->pathtravelthru->roomsInPath[ant->distancecovered]);	
-}
-
-void			moveants(t_antfarm *farm)
-{
-	int		turn;
-	t_ant	*tmpAnt;
-	char	*nextRoom;
-	int		movedAnts;
-
-	turn = 1;
-	while (1)//turn looping
-	{
-		movedAnts = 0;
-		tmpAnt = farm->allants;
-		while (tmpAnt != NULL)
-		{
-			if (tmpAnt->turntomove <= turn)
-			{
-				if (tmpAnt->distancecovered < tmpAnt->pathtravelthru->distance)
-				{
-					nextRoom = getNextRoom(tmpAnt);
-					printAnt(nextRoom, tmpAnt->antnum);
-					tmpAnt->distancecovered++;
-					movedAnts++;
-				}
-			}
-			tmpAnt = tmpAnt->next;
-		}
-		if (movedAnts == 0)
-			break;
-		ft_putchar('\n');
-		turn++;
-	}
-}
->>>>>>> f693f4a5c8f62631eb39244c0736a337f3601171
